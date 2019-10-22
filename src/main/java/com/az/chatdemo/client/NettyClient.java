@@ -5,6 +5,7 @@ import com.az.chatdemo.client.console.LoginConsoleCommand;
 import com.az.chatdemo.client.handler.*;
 import com.az.chatdemo.codec.PacketCodecHandler;
 import com.az.chatdemo.packet.Spliter;
+import com.az.chatdemo.server.handler.IMIdleStateHandler;
 import com.az.chatdemo.utils.SessionUtil;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.Channel;
@@ -36,9 +37,11 @@ public class NettyClient {
                     @Override
                     protected void initChannel(NioSocketChannel nioSocketChannel) throws Exception {
 //                        nioSocketChannel.pipeline().addLast(new ClientHandler());
-
+                        // 空闲检测
+                        nioSocketChannel.pipeline().addLast(new IMIdleStateHandler());
                         nioSocketChannel.pipeline().addLast(new Spliter());
                         nioSocketChannel.pipeline().addLast(PacketCodecHandler.INSTANCE);
+
 //                        nioSocketChannel.pipeline().addLast(new PacketDecoder());
                         nioSocketChannel.pipeline().addLast(new LoginResponseHandler());
                         nioSocketChannel.pipeline().addLast(new MessageResponseHandler());
@@ -49,6 +52,9 @@ public class NettyClient {
                         nioSocketChannel.pipeline().addLast(new ListGroupMemberResponseHandler());
                         nioSocketChannel.pipeline().addLast(new GroupMessageResponseHandler());
 //                        nioSocketChannel.pipeline().addLast(new PacketEcoder());
+
+                        // 心跳定时器
+                        nioSocketChannel.pipeline().addLast(new HearBeatTimerHandler());
 
                     }
                 });

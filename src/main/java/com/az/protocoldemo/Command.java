@@ -32,7 +32,11 @@ public interface Command {
 
     Byte QUIT_GROUP_RESPONSE = 14;
 
-    Byte GROUP_MESSAGE_REQUEST= 15;
+    Byte GROUP_MESSAGE_REQUEST = 15;
 
     Byte GROUP_MESSAGE_RESPONSE = 16;
+
+    Byte HEART_BEAT_REQUEST = 17;
+
+    Byte HEART_BEAT_RESPONSE = 18;
 }

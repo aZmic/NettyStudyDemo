@@ -1,8 +1,6 @@
 package com.az.chatdemo.server;
 
 import com.az.chatdemo.codec.PacketCodecHandler;
-import com.az.chatdemo.codec.PacketDecoder;
-import com.az.chatdemo.codec.PacketEcoder;
 import com.az.chatdemo.packet.Spliter;
 import com.az.chatdemo.server.handler.*;
 import io.netty.bootstrap.ServerBootstrap;
@@ -40,11 +38,15 @@ public class NettyServer {
 //                        nioSocketChannel.pipeline().addLast(new OutBoundHandlerB());
 //                        nioSocketChannel.pipeline().addLast(new OutBoundHandlerC());
 
+                        nioSocketChannel.pipeline().addLast(new IMIdleStateHandler());
                         nioSocketChannel.pipeline().addLast(new Spliter());
                         nioSocketChannel.pipeline().addLast(PacketCodecHandler.INSTANCE);
+
 //                        nioSocketChannel.pipeline().addLast(new LifecycleTestHandler());
 //                        nioSocketChannel.pipeline().addLast(new PacketDecoder());
                         nioSocketChannel.pipeline().addLast(LoginRequestHandler.INSTANCE);
+                        // 心跳定时器
+                        nioSocketChannel.pipeline().addLast(HeartBeatRequestHandler.INSTANCE);
                         nioSocketChannel.pipeline().addLast(AuthHandler.INSTANCE);
 //                        nioSocketChannel.pipeline().addLast(MessageRequestHandler.INSTANCE);
 //                        nioSocketChannel.pipeline().addLast(CreateGroupRequestHandler.INSTANCE);

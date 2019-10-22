@@ -14,4 +14,5 @@ public class MessageResponseHandler extends SimpleChannelInboundHandler<MessageR
         System.out.println(fromUserId + ": " + fromUserName + ": " + messageResponsePacket.getMsg());
 //        System.out.println(new Date()+"：收到服务端消息："+messageResponsePacket.getMsg());
     }
+
 }
